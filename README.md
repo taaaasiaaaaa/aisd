@@ -1,1 +1,1 @@
-# aisd
+projekty algorytmy i struktury danycyh
