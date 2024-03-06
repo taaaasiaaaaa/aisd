@@ -1,0 +1,87 @@
+#include<vector>
+#include <iostream>
+#include <time.h>
+#include <stdlib.h>
+#include <chrono>
+#include <cstdint>
+#include <thread>
+
+// wierzcholki euler jak wczesniej hamilton zmniejszyc (10-30) a gestosc ta sama
+// euler first
+int ns[] = { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+double bs[] = { 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875 };
+//hamilton
+int hs[] = { 10, 12, 14, 16, 18, 20, 22, 24, 26, 28 };
+// nieskierowany graf spojny z n wierzcholkami i [b*n*(n-1)/2 (+-2)
+// krawędziami zaweirajacy cykl e i h jednoczesnie
+//1. stworz wierzcholki
+//2.dodaj n krawedzi by utworzyc losowy cykl hamiltona (np,1,6,3,2,5,8,7,4,1)
+//3.dopoki l. krawedzi w grafie jest mniejsza niz oczekiwana wykonuj krok 4
+//4. znadz losowo 3 wierzcholki u v i w takie ze nie istnieje krawedz (u,v), (u,w), (v,w)
+// i dodaj takie krawdzeie (np.u=2,v=7,w=6)
+//EEEEULEER
+class Graph
+{
+    int V;  //=ns
+list<int> *adjency;
+public:
+    Graph(int V) {this->V=V; adjency = new list<int>[V]}
+    void addEdges(int v, int w);
+    int isEulerian();
+    bool isConneced();
+    void DFS(int v, bool visited[]);
+};
+
+void Graph::addEdges(int v, int w) {
+    adjency[v].push_back(w);
+    adjency[w].pusz_back(v);
+}
+void Graph::DFS(int v, bool visited[]) {
+    visited[v]=true;
+    list<int>::iterator i;
+    for (i=adjency[v].begin(); i !=adjency[v].end(); i++)
+        if (!visited[*i])
+            DFS(*i, visited);
+}
+
+bool Graph::isConneced() {
+    bool visited[V];
+    for (int i = 0; i < V; i++)
+        visited[i] = false;
+    for (i = 0; i < V; i++)
+        if (adjency[i].size() != 0)
+            break;
+
+}
+
+int main() {
+    srand(time(NULL));
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+    for (int i = 0; i < 10; i++) {
+        int n = ns[i];
+        for (int x = 0; x < 7; x++)
+        {
+            double b = bs[x];
+
+            int** G = new int* [n];
+            for (int i = 0; i < n; i++) {
+                G[i] = new int[n];
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    G[i][j] = 0;
+                }
+            }
+
+            RandomDirectedGraph(G, n, b);
+            std::cout << " Gestosc: " << b << " Liczba wierzcholkow: " << n << " Czas dzialania: ";
+            timeDFSmatrix(G, n);
+
+        }
+        std::cout << std::endl;
+    }
+    return 0;
+}
